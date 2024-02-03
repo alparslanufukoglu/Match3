@@ -1,0 +1,5 @@
+level_number: 1
+grid_width: 5
+grid_height: 5
+moves: 18
+grid_layout: h,l,r,a,h,l,r,a,h,b,a,h,l,r,a,r,l,h,l,r,h,l,r,a,h

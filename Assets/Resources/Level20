@@ -1,0 +1,5 @@
+level_number: 20
+grid_width: 8
+grid_height: 9
+moves: 30
+grid_layout: h,a,r,c,l,s,h,a,c,b,a,h,l,h,a,r,l,h,r,a,l,a,r,c,a,l,h,r,c,l,h,a,r,c,l,a,h,r,a,l,s,a,h,r,l,c,h,a,h,r,l,a,c,s,a,c,a,c,s,h,r,a,l,a,l,o,c,a,h,s,h,a

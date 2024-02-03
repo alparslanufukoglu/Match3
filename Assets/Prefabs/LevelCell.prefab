@@ -35,7 +35,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 91, y: -8.2697}
+  m_AnchoredPosition: {x: 101, y: -8.2697}
   m_SizeDelta: {x: 82.8851, y: 16.539}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3389707290357097510
@@ -196,14 +196,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.031149892, g: 0.9433962, b: 0.35550413, a: 1}
+  m_Color: {r: 0.8944019, g: 0.9528302, b: 0.91521543, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 81a59ead2c5fc444c8a2aea301a5a23b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d16a02c6f7c6a4693a0707b7209158c9, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -403,6 +403,7 @@ GameObject:
   - component: {fileID: 8037215410914523073}
   - component: {fileID: 2079457132491641499}
   - component: {fileID: 4260029696137438765}
+  - component: {fileID: 7077215763440764602}
   m_Layer: 5
   m_Name: LevelCell
   m_TagString: Untagged
@@ -417,7 +418,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4972794491310539541}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -472,6 +473,24 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7077215763440764602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4972794491310539541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 866c5b62600584bf3b3a730fadf40b3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelNumberText: {fileID: 3745641697532959702}
+  moveCountText: {fileID: 2228779775925993098}
+  scoreText: {fileID: 6248401729754021207}
+  playButtonText: {fileID: 2027986346162421976}
+  playButtonBackground: {fileID: 4121697201087484187}
+  playButton: {fileID: 194175838519579478}
 --- !u!1 &6219987144044287170
 GameObject:
   m_ObjectHideFlags: 0
@@ -644,8 +663,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 28.1237, y: -8.2697}
-  m_SizeDelta: {x: 42.3473, y: 16.5394}
+  m_AnchoredPosition: {x: 33.254, y: -8.2697}
+  m_SizeDelta: {x: 52.607, y: 16.539}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7378947019917029081
 CanvasRenderer:
