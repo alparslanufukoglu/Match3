@@ -1,12 +1,12 @@
 using UIKit;
 using UnityEngine;
 
-public class LevelGridView : MonoBehaviour,IUITableViewDataSource, IUITableViewDelegate, IUITableViewMargin
+public class LevelTableView : MonoBehaviour,IUITableViewDataSource, IUITableViewDelegate, IUITableViewMargin
 {
     public UITableView table;
     public LevelCellView cellPrefab;
     public GameObject levelsMenu;
-    public static LevelGridView Instance;
+    public static LevelTableView Instance;
     private void Awake()
     {
         Instance = this;

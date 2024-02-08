@@ -9,9 +9,9 @@ public class MainView : MonoBehaviour
     {
         mainMenu.SetActive(false);
         levelsMenu.SetActive(true);
-        LevelGridView.Instance.LoadLevels();
-        LevelGridView.Instance.table.ReloadData(0);
-        LevelGridView.Instance.table.ScrollToCellAt(0, withMargin: true);
+        LevelTableView.Instance.LoadLevels();
+        LevelTableView.Instance.table.ReloadData(0);
+        LevelTableView.Instance.table.ScrollToCellAt(0, withMargin: true);
         
     }
 }
