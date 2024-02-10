@@ -17,9 +17,16 @@ public class LevelCellView : UITableViewCell
    private readonly int _playTextSize = 10;
    public Button playButton;
    private Level _level;
+   private CameraScaler _cameraScaler;
    public event Action OnClick;
-        
-        public void FillCell (Level level)
+
+   private void Start()
+   {
+       _cameraScaler = Camera.main.GetComponent<CameraScaler>();
+   }
+
+
+   public void FillCell (Level level)
         {
             _level = level;
             levelNumberText.text = String.Concat("level : ",level.levelNumber);
@@ -36,6 +43,7 @@ public class LevelCellView : UITableViewCell
         private void LoadSelectedLevel(Level level)
         {
             LevelManager.Instance.SetCurrentLevel(level);
+            _cameraScaler.SetCameraPosition(level.gridWidth,level.gridHeight);
             OnClick?.Invoke();
         }
         private void SetScoreText()
