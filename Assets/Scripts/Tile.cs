@@ -1,19 +1,13 @@
-using UnityEngine;
-
 public class Tile
 {
    public int posX;
    public int posY;
-   public int tileType;
-   public Sprite tileSprite;
+   public TileType tileType;
    
-   public Tile() {}
-
-   public Tile(int posX, int posY, int tileType, Sprite tileSprite)
+   public Tile(int posX, int posY, TileType tileType)
    {
       this.posX = posX;
       this.posY = posY;
       this.tileType = tileType;
-      this.tileSprite = tileSprite;
    }
 }

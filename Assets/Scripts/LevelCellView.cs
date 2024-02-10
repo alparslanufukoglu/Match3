@@ -35,6 +35,7 @@ public class LevelCellView : UITableViewCell
 
         private void LoadSelectedLevel(Level level)
         {
+            LevelManager.Instance.SetCurrentLevel(level);
             OnClick?.Invoke();
         }
         private void SetScoreText()

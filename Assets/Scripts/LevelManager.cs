@@ -9,7 +9,7 @@ public class LevelManager : MonoBehaviour
     public static LevelManager Instance;
     private readonly int _levelCount = 20;
     public readonly List<Level> Levels = new();
-
+    private Level _currentlevel;
     private void Awake()
     {
         Instance = this;
@@ -34,7 +34,21 @@ public class LevelManager : MonoBehaviour
         level.gridWidth = int.Parse(splitLevelInfo[1].Trim().Split(" ").Last());
         level.gridHeight = int.Parse(splitLevelInfo[2].Trim().Split(" ").Last());
         level.moveCount = int.Parse(splitLevelInfo[3].Trim().Split(" ").Last());
-        level.gridLayout = splitLevelInfo[4].Trim().Split(" ").Last();
+        level.gridLayout = RemoveCharacter(splitLevelInfo[4].Trim().Split(" ").Last(), ',');
         return level;
+    }
+    private string RemoveCharacter(string line, char character)
+    {
+        return string.Concat(line.Split(character));
+    }
+
+    public Level GetCurrentLevel()
+    {
+        return _currentlevel;
+    }
+
+    public void SetCurrentLevel(Level level)
+    {
+        _currentlevel = level;
     }
 }
