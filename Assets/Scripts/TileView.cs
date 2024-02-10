@@ -3,15 +3,15 @@ using DG.Tweening;
 using UnityEngine;
 public enum TileType
 {
-    None = -1,
-    Blue = 0,
-    Green = 1,
-    Red = 2,
-    Pink = 3,
-    Purple = 4,
-    Yellow = 5,
-    RowBooster = 6,
-    ColumnBooster = 7
+    None = 0,
+    Blue = 1,
+    Green = 2,
+    Red = 3,
+    Pink = 4,
+    Purple = 5,
+    Yellow = 6,
+    RowBooster = 7,
+    ColumnBooster = 8
 }
 
 public class TileView : MonoBehaviour
