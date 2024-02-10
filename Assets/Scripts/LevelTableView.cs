@@ -37,17 +37,17 @@ public class LevelTableView : MonoBehaviour,IUITableViewDataSource, IUITableView
 
     public float ScalarForCellInTableView(UITableView tableView, int index)
     {
-        return 30;
+        return 120;
     }
 
     public float ScalarForUpperMarginInTableView(UITableView tableView, int index)
     {
-        return index == 0 ? 10f : 2f;
+        return index == 0 ? 100f : 10f;
     }
 
     public float ScalarForLowerMarginInTableView(UITableView tableView, int index)
     {
-        return index == LevelManager.Instance.Levels.Count - 1 ? 10f : 2f;
+        return index == LevelManager.Instance.Levels.Count - 1 ? 100f : 10f;
     }
 
     public void CellAtIndexInTableViewWillAppear(UITableView tableView, int index)

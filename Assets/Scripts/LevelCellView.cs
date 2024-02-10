@@ -13,8 +13,8 @@ public class LevelCellView : UITableViewCell
    public TextMeshProUGUI scoreText; 
    public TextMeshProUGUI playButtonText;
    public Image playButtonBackground;
-   private readonly int _lockedTextSize = 9;
-   private readonly int _playTextSize = 10;
+   private readonly int _lockedTextSize = 35;
+   private readonly int _playTextSize = 50;
    public Button playButton;
    private Level _level;
    private CameraScaler _cameraScaler;
