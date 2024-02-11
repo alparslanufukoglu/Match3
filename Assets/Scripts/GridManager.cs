@@ -1,43 +1,57 @@
+using System.Security.Cryptography.X509Certificates;
+using UnityEditor.U2D.Sprites;
 using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
-    private int boardWidth;
-    private int boardHeight;
-    private TileView[,] _tiles;
+    public int gridWidth;
+    public int gridHeight;
+    public TileView[,] Tiles;
+    public static GridManager Instance;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     void Start()
     {
         SetGrid(LevelManager.Instance.GetCurrentLevel());
     }
     private void SetGrid(Level level)
     {
-        boardWidth = level.gridWidth;
-        boardHeight = level.gridHeight;
-        if (_tiles == null)
+        gridWidth = level.gridWidth;
+        gridHeight = level.gridHeight;
+        if (Tiles == null)
         {
-            _tiles = new TileView[boardWidth, boardHeight];
-            TilePooler.Instance.InitializeTilePool(boardWidth * boardHeight);
+            Tiles = new TileView[gridWidth, gridHeight];
+            TilePooler.Instance.InitializeTilePool(gridWidth * gridHeight);
         }
         else
         {
-            for (var i = 0; i < boardHeight; i++)
+            for (var i = 0; i < gridHeight; i++)
             {
-                for (var j = 0; j < boardWidth; j++)
+                for (var j = 0; j < gridWidth; j++)
                 {
-                    _tiles[j, i] = null;
+                    Tiles[j, i] = null;
                 }
             }
             TilePooler.Instance.ResetPool();
         }
         
-        for (var i = 0; i < boardHeight; i++)
+        for (var i = 0; i < gridHeight; i++)
         {
-            for (var j = 0; j < boardWidth; j++)
+            for (var j = 0; j < gridWidth; j++)
             {
                 var tile = TilePooler.Instance.GetPooledTile();
                 tile.SetTile(j,i,level.gridLayout[j+ j*i], transform);
-                _tiles[j, i] = tile;
+                Tiles[j, i] = tile;
             }
         }
     }
+    public void SwapArrayPosition(Tile tile1, Tile tile2)
+    {
+        (Tiles[tile1.posX, tile1.posY], Tiles[tile2.posX,tile2.posY]) = (Tiles[tile2.posX,tile2.posY], Tiles[tile1.posX, tile1.posY]);
+    }
+    
 }
