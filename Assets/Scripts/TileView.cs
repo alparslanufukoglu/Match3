@@ -18,7 +18,7 @@ public class TileView : MonoBehaviour
 {
     public Sprite[] sprites;
     public SpriteRenderer spriteRenderer;
-    private Tile _tile;
+    public Tile tile;
     private Vector2 fromPosition;
     private Vector2 target;
 
@@ -29,7 +29,7 @@ public class TileView : MonoBehaviour
 
     public void SetTile(int x, int y, char tileType, Transform parent)
     {
-        _tile = new Tile(x, y, GetTileType(tileType));
+        tile = new Tile(x, y, GetTileType(tileType));
         transform.SetParent(parent);
         gameObject.name = "(" + x + "," + y + ")" + GetTileType();
         SetSprite();
@@ -38,14 +38,14 @@ public class TileView : MonoBehaviour
 
     private void AnimateTile()
     {
-        transform.position = new Vector3(_tile.posX, _tile.posY + 8);
+        transform.position = new Vector3(tile.posX, tile.posY + 8);
         ActivateTile();
-        transform.DOMove(new Vector2(_tile.posX, _tile.posY), 0.8f).SetEase(Ease.InOutBack);
+        transform.DOMove(new Vector2(tile.posX, tile.posY), 0.8f).SetEase(Ease.InOutBack);
     }
 
     private void SetSprite()
     { 
-        spriteRenderer.sprite = sprites[(int) _tile.tileType];
+        spriteRenderer.sprite = sprites[(int) tile.tileType];
     }
 
     private TileType GetTileType(char tileType)
@@ -66,17 +66,17 @@ public class TileView : MonoBehaviour
 
     public bool IsEmpty ()
     {
-        return _tile == null;
+        return tile == null;
     }
     
     public TileType GetTileType()
     {
-        return _tile.tileType;
+        return tile.tileType;
     }
 
     public void DeactivateTile()
     {
-        _tile = null;
+        tile = null;
         gameObject.SetActive(false);
     }
     
