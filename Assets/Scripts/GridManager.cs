@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class GridManager : MonoBehaviour
@@ -75,6 +76,7 @@ public class GridManager : MonoBehaviour
         {
             FindVerticalMatches(val);
         }
+        DestroyMatches();
     }
     private void FindHorizontalMatches(int posY)
     {
@@ -158,5 +160,15 @@ public class GridManager : MonoBehaviour
                 }
             }
         }
+    }
+    private async void DestroyMatches()
+    {
+        await UniTask.Delay(400);
+        foreach (var tile in _destroyList.Where(tile => tile.gameObject != null))
+        {
+            Tiles[tile.tile.posX, tile.tile.posY].DeactivateTile();
+        }
+        await UniTask.Delay(300);
+        _destroyList.Clear();
     }
 }
