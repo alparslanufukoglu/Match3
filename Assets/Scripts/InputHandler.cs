@@ -61,33 +61,46 @@ public class InputHandler : MonoBehaviour
     private void SwapTiles(Direction direction)
     {
         if (direction == Direction.None) return;
-        var selectedTile = _selected.GetComponent<TileView>().tile;
+        var selectedTile = _selected.GetComponent<TileView>();
+        TileView targetTile = SetTarget(direction, selectedTile);
+        SwapPositions(targetTile, selectedTile);
+        _selected = null;
+    }
+
+    private TileView SetTarget(Direction direction, TileView selectedTile)
+    {
         TileView targetTile;
         switch (direction)
         {
-            case Direction.Right when selectedTile.posX < GridManager.Instance.gridWidth - 1:
-                targetTile = GridManager.Instance.Tiles[selectedTile.posX + 1, selectedTile.posY];
+            case Direction.Right when selectedTile.tile.posX < GridManager.Instance.gridWidth - 1:
+                targetTile = GridManager.Instance.Tiles[selectedTile.tile.posX + 1, selectedTile.tile.posY];
                 break;
-            case Direction.Left when selectedTile.posX > 0:
-                targetTile = GridManager.Instance.Tiles[selectedTile.posX - 1, selectedTile.posY];
+            case Direction.Left when selectedTile.tile.posX > 0:
+                targetTile = GridManager.Instance.Tiles[selectedTile.tile.posX - 1, selectedTile.tile.posY];
                 break;
-            case Direction.Up when selectedTile.posY < GridManager.Instance.gridHeight - 1:
-                targetTile = GridManager.Instance.Tiles[selectedTile.posX, selectedTile.posY + 1];
+            case Direction.Up when selectedTile.tile.posY < GridManager.Instance.gridHeight - 1:
+                targetTile = GridManager.Instance.Tiles[selectedTile.tile.posX, selectedTile.tile.posY + 1];
                 break;
-            case Direction.Down when selectedTile.posY > 0:
-                targetTile = GridManager.Instance.Tiles[selectedTile.posX, selectedTile.posY - 1];
+            case Direction.Down when selectedTile.tile.posY > 0:
+                targetTile = GridManager.Instance.Tiles[selectedTile.tile.posX, selectedTile.tile.posY - 1];
                 break;
             default:
-                return;
+                return null;
         }
+        return targetTile;
+    }
+
+    private void SwapPositions(TileView targetTile, TileView selectedTile)
+    {
         var position1 = _selected.transform.position;
         var position2 = targetTile.transform.position;
-        GridManager.Instance.SwapArrayPosition(selectedTile, targetTile.tile);
+        GridManager.Instance.SwapArrayPosition(selectedTile.tile, targetTile.tile);
         (position1, position2) = (position2, position1);
-        (selectedTile.posX, targetTile.tile.posX) = (targetTile.tile.posX,selectedTile.posX);
-        (selectedTile.posY, targetTile.tile.posY) = (targetTile.tile.posY,selectedTile.posY);
+        (selectedTile.tile.posX, targetTile.tile.posX) = (targetTile.tile.posX, selectedTile.tile.posX);
+        (selectedTile.tile.posY, targetTile.tile.posY) = (targetTile.tile.posY, selectedTile.tile.posY);
         _selected.transform.DOMove(position1, 0.2f);
         targetTile.transform.DOMove(position2, 0.2f);
-        _selected = null;
+        _selected.name = selectedTile.GiveName(selectedTile.tile.posX, selectedTile.tile.posY);
+        targetTile.name = targetTile.GiveName(targetTile.tile.posX, targetTile.tile.posY);
     }
 }
