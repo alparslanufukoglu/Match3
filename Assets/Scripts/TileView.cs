@@ -26,28 +26,24 @@ public class TileView : MonoBehaviour
     {
         DeactivateTile();
     }
-
     public void SetTile(int x, int y, char tileType, Transform parent)
     {
         tile = new Tile(x, y, GetTileType(tileType));
         transform.SetParent(parent);
-        gameObject.name = "(" + x + "," + y + ")" + GetTileType();
+        gameObject.name = GiveName(x,y);
         SetSprite();
         AnimateTile();
     }
-
     private void AnimateTile()
     {
         transform.position = new Vector3(tile.posX, tile.posY + 8);
         ActivateTile();
         transform.DOMove(new Vector2(tile.posX, tile.posY), 0.8f).SetEase(Ease.InOutBack);
     }
-
     private void SetSprite()
     { 
         spriteRenderer.sprite = sprites[(int) tile.tileType];
     }
-
     private TileType GetTileType(char tileType)
     {
         return tileType switch
@@ -63,25 +59,25 @@ public class TileView : MonoBehaviour
             _ => TileType.None
         };
     }
-
     public bool IsEmpty ()
     {
         return tile == null;
     }
-    
     public TileType GetTileType()
     {
         return tile.tileType;
     }
-
     public void DeactivateTile()
     {
         tile = null;
         gameObject.SetActive(false);
     }
-    
     public void ActivateTile()
     {
         gameObject.SetActive(true);
+    }
+    public String GiveName(int x, int y)
+    {
+        return "(" + x + "," + y + ")" + GetTileType();
     }
 }
