@@ -34,6 +34,11 @@ public class TileView : MonoBehaviour
         SetSprite();
         AnimateTile();
     }
+
+    public Tile UpdateTile(Tile tile)
+    {
+       return this.tile = new Tile(tile.posX, tile.posY, tile.tileType);
+    }
     private void AnimateTile()
     {
         transform.position = new Vector3(tile.posX, tile.posY + 8);
