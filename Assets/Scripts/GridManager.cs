@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
 
 public class GridManager : MonoBehaviour
@@ -170,5 +171,30 @@ public class GridManager : MonoBehaviour
         }
         await UniTask.Delay(300);
         _destroyList.Clear();
+        DropTile();
+    }
+    private async void DropTile()
+    {
+        await UniTask.Delay(400);
+        int emptyTileCount = 0;
+        for (int i = 0; i < gridWidth; i++)
+        {
+            for (int j = 0; j < gridHeight; j++)
+            {
+                if (Tiles[i, j].IsEmpty())
+                {
+                    emptyTileCount++;
+                }
+                else if (emptyTileCount > 0)
+                {
+                    (Tiles[i, j - emptyTileCount], Tiles[i, j]) = (Tiles[i, j],Tiles[i, j - emptyTileCount]);
+                    Tiles[i, j - emptyTileCount].transform.DOMove(new Vector3(i, j - emptyTileCount), 0.2f).SetEase(Ease.InOutBack);
+                    Tiles[i, j].transform.DOMove(new Vector3(i, j),0.1f);
+                    Tiles[i, j - emptyTileCount].tile = Tiles[i, j].UpdateTile(Tiles[i,j-emptyTileCount].tile);
+                    Tiles[i, j - emptyTileCount].gameObject.name = Tiles[i, j - emptyTileCount].GiveName(i,j-emptyTileCount);
+                }
+            }
+            emptyTileCount = 0;
+        }
     }
 }
