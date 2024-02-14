@@ -13,7 +13,6 @@ public enum TileType
     RowBooster = 7,
     ColumnBooster = 8
 }
-
 public class TileView : MonoBehaviour
 {
     public Sprite[] sprites;
@@ -30,20 +29,31 @@ public class TileView : MonoBehaviour
     {
         tile = new Tile(x, y, GetTileType(tileType));
         transform.SetParent(parent);
-        gameObject.name = GiveName(x,y);
+        gameObject.name = GiveName(tile.posX,tile.posY);
         SetSprite();
         AnimateTile();
     }
-
-    public Tile UpdateTile(Tile tile)
+    public void UpdatePosition(int x, int y)
     {
-       return this.tile = new Tile(tile.posX, tile.posY, tile.tileType);
+        tile.posX = x;
+        tile.posY = y;
+        transform.DOMove(new Vector3(tile.posX, tile.posY), 0.2f).SetEase(Ease.InOutBack);
+    }
+
+    public void UpdateTile(TileView tileView, TileType tileType, Transform parent)
+    {
+        var position = tileView.transform.position;
+        tile = new Tile((int)position.x, (int)position.y, tileType);
+        transform.SetParent(parent);
+        gameObject.name = GiveName(tile.posX,tile.posY);
+        SetSprite();
+        AnimateTile();
     }
     private void AnimateTile()
     {
         transform.position = new Vector3(tile.posX, tile.posY + 8);
         ActivateTile();
-        transform.DOMove(new Vector2(tile.posX, tile.posY), 0.8f).SetEase(Ease.InOutBack);
+        transform.DOMove(new Vector2(tile.posX, tile.posY), 0.5f).SetEase(Ease.InOutBack);
     }
     private void SetSprite()
     { 

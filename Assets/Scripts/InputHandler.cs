@@ -36,7 +36,6 @@ public class InputHandler : MonoBehaviour
             SwapTiles(SetDirection());
         }
     }
-    
     private Direction SetDirection()
     {
         const float swipeThreshold = 0.3f;
@@ -66,7 +65,6 @@ public class InputHandler : MonoBehaviour
         SwapPositions(targetTile, selectedTile);
         _selected = null;
     }
-
     private TileView SetTarget(Direction direction, TileView selectedTile)
     {
         TileView targetTile;
@@ -89,7 +87,6 @@ public class InputHandler : MonoBehaviour
         }
         return targetTile;
     }
-
     private void SwapPositions(TileView targetTile, TileView selectedTile)
     {
         var position1 = _selected.transform.position;

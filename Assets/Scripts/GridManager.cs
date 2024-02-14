@@ -3,6 +3,7 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class GridManager : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class GridManager : MonoBehaviour
     public int gridHeight;
     public TileView[,] Tiles;
     [SerializeField] private List<TileView> _destroyList = new ();
-    public static GridManager Instance;
+    public static GridManager Instance; 
     private void Awake()
     {
         Instance = this;
@@ -188,9 +189,8 @@ public class GridManager : MonoBehaviour
                 else if (emptyTileCount > 0)
                 {
                     (Tiles[i, j - emptyTileCount], Tiles[i, j]) = (Tiles[i, j],Tiles[i, j - emptyTileCount]);
-                    Tiles[i, j - emptyTileCount].transform.DOMove(new Vector3(i, j - emptyTileCount), 0.2f).SetEase(Ease.InOutBack);
+                    Tiles[i,j-emptyTileCount].UpdatePosition(i,j-emptyTileCount);
                     Tiles[i, j].transform.DOMove(new Vector3(i, j),0.1f);
-                    Tiles[i, j - emptyTileCount].tile = Tiles[i, j].UpdateTile(Tiles[i,j-emptyTileCount].tile);
                     Tiles[i, j - emptyTileCount].gameObject.name = Tiles[i, j - emptyTileCount].GiveName(i,j-emptyTileCount);
                 }
             }
