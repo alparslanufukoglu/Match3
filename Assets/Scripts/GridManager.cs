@@ -25,6 +25,7 @@ public class GridManager : MonoBehaviour
     {
         gridWidth = level.gridWidth;
         gridHeight = level.gridHeight;
+        int rowNumber = 0;
         if (Tiles == null)
         {
             Tiles = new TileView[gridWidth, gridHeight];
@@ -47,9 +48,10 @@ public class GridManager : MonoBehaviour
             for (var j = 0; j < gridWidth; j++)
             {
                 var tile = TilePooler.Instance.GetPooledTile();
-                tile.SetTile(j,i,level.gridLayout[j+ j*i], transform);
+                tile.SetTile(j,i,level.gridLayout[j + rowNumber], transform);
                 Tiles[j, i] = tile;
             }
+            rowNumber += gridWidth;
         }
     }
     public void SwapArrayPosition(Tile tile1, Tile tile2)
