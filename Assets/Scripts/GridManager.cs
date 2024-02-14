@@ -196,5 +196,23 @@ public class GridManager : MonoBehaviour
             }
             emptyTileCount = 0;
         }
+        RefillGrid();
+    }
+    private async void RefillGrid()
+    {
+        await UniTask.Delay(400);
+        for (int i = 0; i < gridWidth; i++)
+        {
+            for (int j = 0; j < gridHeight; j++)
+            {
+                if (Tiles[i, j].IsEmpty())
+                {
+                    var tileView = Tiles[i, j]; 
+                    tileView.UpdateTile(tileView,(TileType)Random.Range(1,tileView.sprites.Length), transform);
+                }
+            }
+            
+        }
+
     }
 }
