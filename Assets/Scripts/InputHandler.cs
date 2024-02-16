@@ -1,5 +1,6 @@
 using System;
 using DG.Tweening;
+using Managers;
 using UnityEngine;
 
 public enum Direction
@@ -20,7 +21,7 @@ public class InputHandler : MonoBehaviour
     
     private void OnMouseDown()
     {
-        if (Camera.main != null)
+        if (Camera.main != null && GameManager.Instance.currentState == GameState.ready)
         {
             var hit = Physics2D.Raycast(
                 Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, _offSet)),
@@ -30,7 +31,7 @@ public class InputHandler : MonoBehaviour
     }
     private void OnMouseUp()
     {
-        if (Camera.main != null && _selected != null)
+        if (Camera.main != null && _selected != null && GameManager.Instance.currentState == GameState.ready)
         { 
             _endTouchPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition + new Vector3(0,0,_offSet));
             SwapTiles(SetDirection());
@@ -40,6 +41,7 @@ public class InputHandler : MonoBehaviour
     {
         const float swipeThreshold = 0.3f;
         if (_selected == null) return Direction.None;
+        GameManager.Instance.currentState = GameState.busy;
         Vector2 startTouchPoint = _selected.transform.position;
         float swipeDistance = Vector2.Distance(startTouchPoint, _endTouchPoint);
         if (swipeDistance > swipeThreshold)
@@ -66,6 +68,10 @@ public class InputHandler : MonoBehaviour
         {
             SwapPositions(targetTile, selectedTile);
             _selected = null;
+        }
+        else
+        {
+            GameManager.Instance.currentState = GameState.ready;
         }
     }
     private TileView SetTarget(Direction direction, TileView selectedTile)
