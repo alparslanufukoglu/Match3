@@ -62,8 +62,11 @@ public class InputHandler : MonoBehaviour
         if (direction == Direction.None) return;
         var selectedTile = _selected.GetComponent<TileView>();
         TileView targetTile = SetTarget(direction, selectedTile);
-        SwapPositions(targetTile, selectedTile);
-        _selected = null;
+        if (targetTile != null)
+        {
+            SwapPositions(targetTile, selectedTile);
+            _selected = null;
+        }
     }
     private TileView SetTarget(Direction direction, TileView selectedTile)
     {
