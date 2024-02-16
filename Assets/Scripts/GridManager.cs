@@ -7,16 +7,17 @@ using Random = UnityEngine.Random;
 
 public class GridManager : MonoBehaviour
 {
+    public static GridManager Instance;
     public int gridWidth;
     public int gridHeight;
     public TileView[,] Tiles;
-    [SerializeField] private List<TileView> _destroyList = new ();
-    public static GridManager Instance; 
+    [SerializeField] private List<TileView> destroyList = new ();
+    private const int DestroyThreshold = 3;
+
     private void Awake()
     {
         Instance = this;
     }
-
     void Start()
     {
         SetGrid(LevelManager.Instance.GetCurrentLevel());
@@ -59,7 +60,6 @@ public class GridManager : MonoBehaviour
         (Tiles[tile1.posX, tile1.posY], Tiles[tile2.posX,tile2.posY]) = (Tiles[tile2.posX,tile2.posY], Tiles[tile1.posX, tile1.posY]);
         FindMatches(new List<Tile> {tile1,tile2});
     }
-    
     private void FindMatches(IReadOnlyCollection<Tile> list)
     {
         List<int> horizontalCheck = new ();
@@ -80,7 +80,11 @@ public class GridManager : MonoBehaviour
         {
             FindVerticalMatches(val);
         }
-        DestroyMatches();
+
+        if (destroyList.Count >= DestroyThreshold)
+        {
+            DestroyMatches();
+        }
     }
     private void FindHorizontalMatches(int posY)
     {
@@ -106,7 +110,7 @@ public class GridManager : MonoBehaviour
                     {
                         if (horizontalMatches.Count >= 3)
                         {
-                            _destroyList.AddRange(horizontalMatches);
+                            destroyList.AddRange(horizontalMatches);
                         }
                     }
                 }
@@ -114,7 +118,7 @@ public class GridManager : MonoBehaviour
                 {
                     if (horizontalMatches.Count >= 3)
                     {
-                        _destroyList.AddRange(horizontalMatches);
+                        destroyList.AddRange(horizontalMatches);
                     }
                     horizontalMatches.Clear();
                     horizontalMatches.Add(checkTile);
@@ -148,7 +152,7 @@ public class GridManager : MonoBehaviour
                     {
                         if (verticalMatches.Count >= 3)
                         {
-                            _destroyList.AddRange(verticalMatches);
+                            destroyList.AddRange(verticalMatches);
                         }
                     }
                 }
@@ -156,7 +160,7 @@ public class GridManager : MonoBehaviour
                 {
                     if (verticalMatches.Count >= 3)
                     {
-                        _destroyList.AddRange(verticalMatches);
+                        destroyList.AddRange(verticalMatches);
                     }
                     verticalMatches.Clear();
                     verticalMatches.Add(checkTile);
@@ -167,18 +171,18 @@ public class GridManager : MonoBehaviour
     }
     private async void DestroyMatches()
     {
-        await UniTask.Delay(400);
-        foreach (var tile in _destroyList.Where(tile => tile.gameObject != null))
+        await UniTask.Delay(300);
+        foreach (var tile in destroyList.Where(tile => tile.gameObject != null))
         {
             Tiles[tile.tile.posX, tile.tile.posY].DeactivateTile();
         }
-        await UniTask.Delay(300);
-        _destroyList.Clear();
+        await UniTask.Delay(100);
+        destroyList.Clear();
         DropTile();
     }
     private async void DropTile()
     {
-        await UniTask.Delay(400);
+        await UniTask.Delay(100);
         int emptyTileCount = 0;
         for (int i = 0; i < gridWidth; i++)
         {
@@ -213,8 +217,24 @@ public class GridManager : MonoBehaviour
                     tileView.UpdateTile(tileView,(TileType)Random.Range(1,tileView.sprites.Length), transform);
                 }
             }
-            
         }
-
+        FindAllMatches();
+    }
+    private async void FindAllMatches() 
+    { 
+        await UniTask.Delay(400);
+        for (int x = 0; x < gridWidth; x++)
+        { 
+            FindVerticalMatches(x);
+        }
+        for (int y = 0; y < gridHeight; y++)
+        { 
+            FindHorizontalMatches(y);
+        }
+        if (destroyList.Count >= DestroyThreshold)
+        {
+            await UniTask.Delay(100);
+            DestroyMatches();
+        }
     }
 }
