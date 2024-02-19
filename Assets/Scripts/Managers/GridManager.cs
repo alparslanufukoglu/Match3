@@ -15,16 +15,13 @@ namespace Managers
         public TileView[,] Tiles;
         [SerializeField] private List<TileView> destroyList = new ();
         private const int DestroyThreshold = 3;
+        private const int TileScore = 50;
 
-        private void Awake()
+        public void Awake()
         {
             Instance = this;
         }
-        void Start()
-        {
-            SetGrid(LevelManager.Instance.GetCurrentLevel());
-        }
-        private void SetGrid(Level level)
+        public void SetGrid(Level level)
         {
             gridWidth = level.gridWidth;
             gridHeight = level.gridHeight;
@@ -196,6 +193,7 @@ namespace Managers
                     if (Tiles[i, j].IsEmpty())
                     {
                         emptyTileCount++;
+                        GameManager.Instance.IncreaseScore(TileScore);
                     }
                     else if (emptyTileCount > 0)
                     {

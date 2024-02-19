@@ -61,12 +61,14 @@ public class InputHandler : MonoBehaviour
     }
     private void SwapTiles(Direction direction)
     {
+        const int move = 1;
         if (direction == Direction.None) return;
         var selectedTile = _selected.GetComponent<TileView>();
         TileView targetTile = SetTarget(direction, selectedTile);
         if (targetTile != null)
         {
             SwapPositions(targetTile, selectedTile);
+            GameManager.Instance.DecreaseMoveCount(move);
             _selected = null;
         }
         else

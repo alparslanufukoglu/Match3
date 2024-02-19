@@ -1642,7 +1642,7 @@ GameObject:
   - component: {fileID: 2008456860}
   - component: {fileID: 2008456859}
   m_Layer: 0
-  m_Name: LevelGridView
+  m_Name: LevelTableView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

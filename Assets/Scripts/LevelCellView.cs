@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using Managers;
 using TMPro;
 using UIKit;
@@ -23,7 +24,7 @@ public class LevelCellView : UITableViewCell
 
    private void Start()
    {
-       _cameraScaler = Camera.main.GetComponent<CameraScaler>();
+       if (Camera.main != null) _cameraScaler = Camera.main.GetComponent<CameraScaler>();
    }
 
 
@@ -35,9 +36,10 @@ public class LevelCellView : UITableViewCell
             SetScoreText();
             SetButtonStatus();
         }
-        public void PlayButtonClicked()
+        public async void PlayButtonClicked()
         {
             SceneManager.LoadScene(1,LoadSceneMode.Additive);
+            await UniTask.Yield(PlayerLoopTiming.LastFixedUpdate);
             LoadSelectedLevel(_level);
         }
 
@@ -46,6 +48,8 @@ public class LevelCellView : UITableViewCell
             LevelManager.Instance.SetCurrentLevel(level);
             _cameraScaler.SetCameraPosition(level.gridWidth,level.gridHeight);
             OnClick?.Invoke();
+            GridView.Instance.SetLevelUI(level);
+            GridManager.Instance.SetGrid(level);
         }
         private void SetScoreText()
         {
