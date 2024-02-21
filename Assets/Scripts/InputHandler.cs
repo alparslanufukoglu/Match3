@@ -27,6 +27,14 @@ public class InputHandler : MonoBehaviour
                 Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, _offSet)),
                 Vector2.zero);
             _selected = hit.collider != null ? hit.collider.gameObject : null;
+            if (_selected != null)
+            {
+                var selectedTile = _selected.GetComponent<TileView>();
+                if (selectedTile.IsBooster())
+                {
+                    GridManager.Instance.ActivateBooster(selectedTile);
+                }
+            }
         }
     }
     private void OnMouseUp()
@@ -69,6 +77,10 @@ public class InputHandler : MonoBehaviour
         {
             SwapPositions(targetTile, selectedTile);
             GameManager.Instance.DecreaseMoveCount(move);
+            if (targetTile.IsBooster())
+            {
+                GridManager.Instance.ActivateBooster(targetTile);
+            }
             _selected = null;
         }
         else

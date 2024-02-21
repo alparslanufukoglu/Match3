@@ -209,7 +209,7 @@ namespace Managers
         }
         private async void RefillGrid()
         {
-            await UniTask.Delay(400);
+            await UniTask.Delay(300);
             for (int i = 0; i < gridWidth; i++)
             {
                 for (int j = 0; j < gridHeight; j++)
@@ -242,6 +242,33 @@ namespace Managers
             else
             {
                 GameManager.Instance.currentState = GameState.ready;
+            }
+        }
+        public void ActivateBooster(TileView booster)
+        {
+            switch (booster.tile.tileType)
+            { 
+                case TileType.RowBooster:
+                    ActivateRowBooster(booster);
+                    break;
+                case TileType.ColumnBooster:
+                    ActivateColumnBooster(booster);
+                    break;
+            }
+            DestroyMatches();
+        }
+        private void ActivateRowBooster(TileView booster)
+        {
+            for (int i = 0; i < gridWidth; i++)
+            {
+                destroyList.Add(Tiles[i, booster.tile.posY]);
+            }
+        }
+        private void ActivateColumnBooster(TileView booster)
+        {
+            for (int i = 0; i < gridHeight; i++)
+            {
+                destroyList.Add(Tiles[booster.tile.posX, i]);
             }
         }
     }

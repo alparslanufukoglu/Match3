@@ -95,4 +95,9 @@ public class TileView : MonoBehaviour
     {
         return "(" + x + "," + y + ")" + GetTileType();
     }
+    
+    public bool IsBooster()
+    {
+        return tile.tileType == TileType.RowBooster || tile.tileType == TileType.ColumnBooster;
+    }
 }
