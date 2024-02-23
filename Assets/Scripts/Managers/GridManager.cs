@@ -13,7 +13,7 @@ namespace Managers
         public int gridWidth;
         public int gridHeight;
         public TileView[,] Tiles;
-        [SerializeField] private List<TileView> destroyList = new ();
+        [SerializeField] public List<TileView> destroyList = new ();
         private const int DestroyThreshold = 3;
         private const int TileScore = 50;
 
@@ -223,7 +223,7 @@ namespace Managers
             }
             FindAllMatches();
         }
-        private async void FindAllMatches() 
+        public async void FindAllMatches() 
         { 
             await UniTask.Delay(400);
             for (int x = 0; x < gridWidth; x++)
@@ -234,14 +234,19 @@ namespace Managers
             { 
                 FindHorizontalMatches(y);
             }
-            if (destroyList.Count >= DestroyThreshold)
+            if (destroyList.Count < DestroyThreshold)
             {
-                await UniTask.Delay(100);
-                DestroyMatches();
+                if (GameManager.Instance.moveCount <= 0)
+                {
+                    await UniTask.Delay(750);
+                    GameManager.Instance.HandleLevelEnd();
+                }
+                GameManager.Instance.currentState = GameState.ready;
             }
             else
             {
-                GameManager.Instance.currentState = GameState.ready;
+                await UniTask.Delay(100);
+                DestroyMatches();
             }
         }
         public void ActivateBooster(TileView booster)

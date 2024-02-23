@@ -1,4 +1,3 @@
-using System;
 using Managers;
 using TMPro;
 using UnityEngine;
@@ -9,6 +8,7 @@ public class GridView : MonoBehaviour
     [SerializeField] private TextMeshProUGUI levelNumber;
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI moveCountText;
+    [SerializeField] private TextMeshProUGUI highScoreText;
     private Level _level;
 
     public void Awake()
@@ -32,5 +32,19 @@ public class GridView : MonoBehaviour
     public void UpdateMoveText(int moves)
     {
         moveCountText.text = "Moves\n" + moves;
+    }
+
+    public void SetNewHighScoreText(int score)
+    {
+        var highScore = PlayerPrefs.GetInt("Level" + _level.levelNumber, 0);
+        if (score > highScore)
+        {
+            PlayerPrefs.SetInt("Level" + _level.levelNumber, score);
+            highScoreText.text = "NEW HIGH SCORE" + "\n\n" + score;
+        }
+        else
+        {
+            highScoreText.text = "SCORE" + "\n\n" + score;
+        }
     }
 }
