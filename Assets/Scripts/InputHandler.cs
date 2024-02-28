@@ -32,6 +32,7 @@ public class InputHandler : MonoBehaviour
                 var selectedTile = _selected.GetComponent<TileView>();
                 if (selectedTile.IsBooster())
                 {
+                    GameManager.Instance.currentState = GameState.busy;
                     GridManager.Instance.ActivateBooster(selectedTile);
                 }
             }
@@ -70,7 +71,11 @@ public class InputHandler : MonoBehaviour
     private void SwapTiles(Direction direction)
     {
         const int move = 1;
-        if (direction == Direction.None) return;
+        if (direction == Direction.None)
+        {
+            GameManager.Instance.currentState = GameState.ready;
+            return;
+        }
         var selectedTile = _selected.GetComponent<TileView>();
         TileView targetTile = SetTarget(direction, selectedTile);
         if (targetTile != null)
@@ -82,6 +87,7 @@ public class InputHandler : MonoBehaviour
                 GridManager.Instance.ActivateBooster(targetTile);
             }
             _selected = null;
+            _swipeDirection = Direction.None;
         }
         else
         {

@@ -1274,6 +1274,7 @@ MonoBehaviour:
   gridWidth: 0
   gridHeight: 0
   destroyList: []
+  destroyEffectPrefab: {fileID: 6441728045331244545, guid: 7cacd4948d72049729878f80295dd4c4, type: 3}
 --- !u!4 &1118648251
 Transform:
   m_ObjectHideFlags: 0

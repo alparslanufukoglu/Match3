@@ -14,6 +14,8 @@ namespace Managers
         public int gridHeight;
         public TileView[,] Tiles;
         [SerializeField] public List<TileView> destroyList = new ();
+        [SerializeField] private GameObject destroyEffectPrefab;
+        [SerializeField] private List<GameObject> particlePool = new ();
         private const int DestroyThreshold = 3;
         private const int TileScore = 50;
 
@@ -52,6 +54,17 @@ namespace Managers
                     Tiles[j, i] = tile;
                 }
                 rowNumber += gridWidth;
+            }
+            InitializedParticlePool();
+        }
+        public void InitializedParticlePool()
+        {
+            const int poolSize = 20;
+            for (int i = 0; i < poolSize; i++)
+            {
+                var particleObject = Instantiate(destroyEffectPrefab, transform);
+                particleObject.SetActive(false);
+                particlePool.Add(particleObject);
             }
         }
         public void SwapArrayPosition(Tile tile1, Tile tile2)
@@ -177,10 +190,26 @@ namespace Managers
             foreach (var tile in destroyList.Where(tile => tile.gameObject != null))
             {
                 Tiles[tile.tile.posX, tile.tile.posY].DeactivateTile();
+                ActivateParticle(tile);
             }
             await UniTask.Delay(100);
             destroyList.Clear();
             DropTile();
+        }
+        private async void ActivateParticle(TileView tile)
+        {
+            var particle = particlePool.FirstOrDefault(particleObject => !particleObject.activeInHierarchy);
+            var color = tile.spriteRenderer.color;
+            if (particle != null)
+            { 
+                particle.transform.SetParent(transform);
+                particle.transform.position = tile.transform.position;
+                ParticleSystem particleSystem = particle.GetComponentInChildren<ParticleSystem>();
+                particleSystem.startColor = color;
+                particle.SetActive(true);
+            }
+            await UniTask.Delay(500);
+            particle.SetActive(false);
         }
         private async void DropTile()
         {
@@ -210,6 +239,7 @@ namespace Managers
         private async void RefillGrid()
         {
             await UniTask.Delay(300);
+            var gridSize = gridWidth * gridHeight; 
             for (int i = 0; i < gridWidth; i++)
             {
                 for (int j = 0; j < gridHeight; j++)
@@ -217,7 +247,14 @@ namespace Managers
                     if (Tiles[i, j].IsEmpty())
                     {
                         var tileView = Tiles[i, j]; 
-                        tileView.UpdateTile(tileView,(TileType)Random.Range(1,tileView.sprites.Length), transform);
+                        if (IsBoosterRound(LevelManager.Instance.GetCurrentLevel()))
+                        {
+                            tileView.UpdateTile(tileView,(TileType)tileView.GiveBoosterTypeIndex(), transform);
+                        }
+                        else
+                        {
+                            tileView.UpdateTile(tileView,(TileType)tileView.GiveTileTypeIndex(gridSize), transform);
+                        }
                     }
                 }
             }
@@ -276,5 +313,11 @@ namespace Managers
                 destroyList.Add(Tiles[booster.tile.posX, i]);
             }
         }
+        private bool IsBoosterRound(Level level)
+        {
+            var round = Random.Range(0, level.moveCount - 7); 
+            return GameManager.Instance.moveCount == round;
+        }
+        
     }
 }

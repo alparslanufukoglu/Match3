@@ -1,4 +1,3 @@
-using System;
 using DG.Tweening;
 using UnityEngine;
 public enum TileType
@@ -8,7 +7,7 @@ public enum TileType
     Green = 2,
     Red = 3,
     Pink = 4,
-    Purple = 5,
+    Purple  = 5,
     Yellow = 6,
     RowBooster = 7,
     ColumnBooster = 8
@@ -18,8 +17,8 @@ public class TileView : MonoBehaviour
     public Sprite[] sprites;
     public SpriteRenderer spriteRenderer;
     public Tile tile;
-    private Vector2 fromPosition;
-    private Vector2 target;
+    private Vector2 _fromPosition;
+    private Vector2 _target;
 
     private void Awake()
     {
@@ -66,8 +65,8 @@ public class TileView : MonoBehaviour
             'h' => TileType.Blue,
             'l' => TileType.Green,
             'a' => TileType.Pink,
-            'r' => TileType.Purple,
-            's' => TileType.Red,
+            'r' => TileType.Red,
+            's' => TileType.Purple,
             'c' => TileType.Yellow,
             'b' => TileType.RowBooster,
             'o' => TileType.ColumnBooster,
@@ -78,7 +77,8 @@ public class TileView : MonoBehaviour
     {
         return tile == null;
     }
-    public TileType GetTileType()
+
+    private TileType GetTileType()
     {
         return tile.tileType;
     }
@@ -87,17 +87,32 @@ public class TileView : MonoBehaviour
         tile = null;
         gameObject.SetActive(false);
     }
-    public void ActivateTile()
+
+    private void ActivateTile()
     {
         gameObject.SetActive(true);
     }
-    public String GiveName(int x, int y)
+    public string GiveName(int x, int y)
     {
         return "(" + x + "," + y + ")" + GetTileType();
     }
-    
     public bool IsBooster()
     {
         return tile.tileType == TileType.RowBooster || tile.tileType == TileType.ColumnBooster;
+    }
+    
+    public int GiveBoosterTypeIndex()
+    {
+        return Random.Range(sprites.Length - 2, sprites.Length);
+    }
+    
+    public int GiveTileTypeIndex(int boardSize)
+    {
+        return boardSize switch
+        {
+            < 35 => Random.Range(1, sprites.Length - 5),
+            > 35 and < 45 => Random.Range(1, sprites.Length - 4),
+            _ => Random.Range(1, sprites.Length - 3)
+        };
     }
 }
