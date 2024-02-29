@@ -6,96 +6,94 @@ using UIKit;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-
-
 public class LevelCellView : UITableViewCell
 {
-   public TextMeshProUGUI levelNumberText; 
-   public TextMeshProUGUI moveCountText; 
-   public TextMeshProUGUI scoreText; 
-   public TextMeshProUGUI playButtonText;
-   public Image playButtonBackground;
-   private readonly int _lockedTextSize = 35;
-   private readonly int _playTextSize = 50;
-   public Button playButton;
-   private Level _level;
-   private CameraScaler _cameraScaler;
-   public event Action OnClick;
+    public TextMeshProUGUI levelNumberText;
+    public TextMeshProUGUI moveCountText;
+    public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI playButtonText;
+    public Image playButtonBackground;
+    private readonly int _lockedTextSize = 35;
+    private readonly int _playTextSize = 50;
+    public Button playButton;
+    private Level _level;
+    private CameraScaler _cameraScaler;
+    public event Action OnClick;
+    private void Start()
+    {
+        if (Camera.main != null) _cameraScaler = Camera.main.GetComponent<CameraScaler>();
+    }
 
-   private void Start()
-   {
-       if (Camera.main != null) _cameraScaler = Camera.main.GetComponent<CameraScaler>();
-   }
+    public void FillCell(Level level)
+    {
+        _level = level;
+        levelNumberText.text = String.Concat("level : ", level.levelNumber);
+        moveCountText.text = String.Concat("Move Count : ", level.moveCount);
+        SetScoreText();
+        SetButtonStatus();
+    }
 
+    private async void PlayButtonClicked()
+    {
+        SceneManager.LoadScene(1, LoadSceneMode.Additive);
+        EventManager.Instance.PlayButtonClicked(1);
+        await UniTask.Yield(PlayerLoopTiming.LastFixedUpdate);
+        LoadSelectedLevel(_level);
+    }
 
-   public void FillCell (Level level)
-        {
-            _level = level;
-            levelNumberText.text = String.Concat("level : ",level.levelNumber);
-            moveCountText.text = String.Concat("Move Count : " ,level.moveCount);
-            SetScoreText();
-            SetButtonStatus();
-        }
-        public async void PlayButtonClicked()
-        {
-            SceneManager.LoadScene(1,LoadSceneMode.Additive);
-            await UniTask.Yield(PlayerLoopTiming.LastFixedUpdate);
-            LoadSelectedLevel(_level);
-        }
+    private void LoadSelectedLevel(Level level)
+    {
+        LevelManager.Instance.SetCurrentLevel(level);
+        _cameraScaler.SetCameraPosition(level.gridWidth, level.gridHeight);
+        OnClick?.Invoke();
+        GridView.Instance.SetLevelUI(level);
+        GridManager.Instance.SetGrid(level);
+    }
 
-        private void LoadSelectedLevel(Level level)
+    private void SetScoreText()
+    {
+        if (_level.IsLocked())
         {
-            LevelManager.Instance.SetCurrentLevel(level);
-            _cameraScaler.SetCameraPosition(level.gridWidth,level.gridHeight);
-            OnClick?.Invoke();
-            GridView.Instance.SetLevelUI(level);
-            GridManager.Instance.SetGrid(level);
+            scoreText.text = "Locked Level";
         }
-        private void SetScoreText()
+        else if (_level.GetScore() == 0)
         {
-            if (_level.IsLocked())
-            {
-                scoreText.text = "Locked Level";
-            }
-            else if (_level.GetScore() == 0)
-            {
-                scoreText.text = "No Score";
-            }
-            else
-            {
-                scoreText.text = "High Score : " + _level.GetScore();
-            }
+            scoreText.text = "No Score";
         }
-        private void SetButtonStatus()
+        else
         {
-            if (_level.IsLocked()) 
-            {
-                LockButton();
-            }
-            else
-            {
-                UnlockButton();
-            }
+            scoreText.text = "High Score : " + _level.GetScore();
         }
-        private void LockButton()
+    }
+    private void SetButtonStatus()
+    {
+        if (_level.IsLocked())
         {
-            playButtonText.text = "Locked";
-            playButtonText.fontSize = _lockedTextSize;
-            playButtonBackground.color = Color.grey;
-            playButton.interactable = false;
-            playButton.onClick.RemoveListener(PlayButtonClicked);
+            LockButton();
         }
-
-        private void UnlockButton()
+        else
         {
-            playButtonText.text = "Play";
-            playButtonText.fontSize = _playTextSize;
-            playButtonBackground.color = Color.white;
-            playButton.interactable = true;
-            playButton.onClick.AddListener(PlayButtonClicked);
+            UnlockButton();
         }
-        public void Clear()
-        {
-            playButton.onClick.RemoveListener(PlayButtonClicked);
-        }
+    }
+    private void LockButton()
+    {
+        playButtonText.text = "Locked";
+        playButtonText.fontSize = _lockedTextSize;
+        playButtonBackground.color = Color.grey;
+        playButton.interactable = false;
+        playButton.onClick.RemoveListener(PlayButtonClicked);
+    }
+    private void UnlockButton()
+    {
+        playButtonText.text = "Play";
+        playButtonText.fontSize = _playTextSize;
+        playButtonBackground.color = Color.white;
+        playButton.interactable = true;
+        playButton.onClick.AddListener(PlayButtonClicked);
+    }
+    public void Clear()
+    {
+        playButton.onClick.RemoveListener(PlayButtonClicked);
+    }
 }

@@ -13,7 +13,7 @@ namespace Managers
         public int gridWidth;
         public int gridHeight;
         public TileView[,] Tiles;
-        [SerializeField] public List<TileView> destroyList = new ();
+        public List<TileView> destroyList = new ();
         [SerializeField] private GameObject destroyEffectPrefab;
         [SerializeField] private List<GameObject> particlePool = new ();
         private const int DestroyThreshold = 3;
@@ -57,7 +57,8 @@ namespace Managers
             }
             InitializedParticlePool();
         }
-        public void InitializedParticlePool()
+
+        private void InitializedParticlePool()
         {
             const int poolSize = 20;
             for (int i = 0; i < poolSize; i++)

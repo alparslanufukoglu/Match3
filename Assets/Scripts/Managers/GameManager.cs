@@ -44,13 +44,11 @@ namespace Managers
                 HandleLevelEnd();
             }
         }
-
         public void HandleLevelEnd()
         {
             GridView.Instance.SetNewHighScoreText(score);
             levelEnd.SetActive(true);
             currentState = GameState.levelEnd;
-            EventManager.Instance.MainMenuActivated();
         }
         
         public async void ReplayClicked()
@@ -68,6 +66,8 @@ namespace Managers
         {
             levelEnd.SetActive(false);
             SceneManager.UnloadSceneAsync(1);
+            EventManager.Instance.MainMenuActivated();
+            EventManager.Instance.PlayButtonClicked(0);
         }
     }
 }
