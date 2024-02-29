@@ -115,4 +115,31 @@ public class TileView : MonoBehaviour
             _ => Random.Range(1, sprites.Length - 3)
         };
     }
+    
+    public Color GetColor()
+    {
+        switch (tile.tileType)
+        {
+            case TileType.None:
+                return Color.white;
+            case TileType.Blue:
+                return new Color32(114, 140, 233,255);
+            case TileType.Green:
+                return new Color32(98, 190, 116, 140);
+            case TileType.Pink:
+                return new Color32(255, 136, 204, 255);
+            case TileType.Purple:
+                return new Color32(114, 90, 228, 255);
+            case TileType.Red:
+                return new Color32(218, 82, 100, 255);
+            case TileType.Yellow:
+                return new Color32(250, 184, 58, 255);
+            case TileType.RowBooster:
+                return new Color32(255, 134, 0, 255);
+            case TileType.ColumnBooster:
+                return new Color32(252, 0, 0, 255);
+            default:
+                return Color.white;
+        }
+    }
 }

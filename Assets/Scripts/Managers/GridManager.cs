@@ -18,7 +18,6 @@ namespace Managers
         [SerializeField] private List<GameObject> particlePool = new ();
         private const int DestroyThreshold = 3;
         private const int TileScore = 50;
-
         public void Awake()
         {
             Instance = this;
@@ -57,7 +56,6 @@ namespace Managers
             }
             InitializedParticlePool();
         }
-
         private void InitializedParticlePool()
         {
             const int poolSize = 20;
@@ -187,11 +185,11 @@ namespace Managers
         }
         private async void DestroyMatches()
         {
-            await UniTask.Delay(300);
+            await UniTask.Delay(200);
             foreach (var tile in destroyList.Where(tile =>! tile.IsEmpty()))
             {
-                Tiles[tile.tile.posX, tile.tile.posY].DeactivateTile();
                 ActivateParticle(tile);
+                Tiles[tile.tile.posX, tile.tile.posY].DeactivateTile();
             }
             await UniTask.Delay(100);
             destroyList.Clear();
@@ -200,17 +198,24 @@ namespace Managers
         private async void ActivateParticle(TileView tile)
         {
             var particle = particlePool.FirstOrDefault(particleObject => !particleObject.activeInHierarchy);
-            var color = tile.spriteRenderer.color;
             if (particle != null)
-            { 
-                particle.transform.SetParent(transform);
-                particle.transform.position = tile.transform.position;
-                ParticleSystem particleSystem = particle.GetComponentInChildren<ParticleSystem>();
-                particleSystem.startColor = color;
+            {
+                SetParticleColor(tile, particle);
                 particle.SetActive(true);
+                await UniTask.Delay(500);
+                particle.SetActive(false);
             }
-            await UniTask.Delay(500);
-            particle.SetActive(false);
+        }
+        private void SetParticleColor(TileView tile, GameObject particle)
+        {
+            var tileParticles = particle.GetComponentsInChildren<ParticleSystem>(); 
+            particle.transform.SetParent(transform);
+            particle.transform.position = tile.transform.position;
+            foreach (var tileParticle in tileParticles)
+            {
+                var tileParticleMain = tileParticle.main;
+                tileParticleMain.startColor = tile.GetColor();
+            }
         }
         private async void DropTile()
         {
@@ -239,7 +244,7 @@ namespace Managers
         }
         private async void RefillGrid()
         {
-            await UniTask.Delay(300);
+            await UniTask.Delay(250);
             var gridSize = gridWidth * gridHeight; 
             for (int i = 0; i < gridWidth; i++)
             {
