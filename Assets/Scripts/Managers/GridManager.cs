@@ -188,7 +188,7 @@ namespace Managers
         private async void DestroyMatches()
         {
             await UniTask.Delay(300);
-            foreach (var tile in destroyList.Where(tile => tile.gameObject != null))
+            foreach (var tile in destroyList.Where(tile =>! tile.IsEmpty()))
             {
                 Tiles[tile.tile.posX, tile.tile.posY].DeactivateTile();
                 ActivateParticle(tile);

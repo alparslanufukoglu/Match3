@@ -1051,6 +1051,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainMenu: {fileID: 746391827}
   levelsMenu: {fileID: 8411071}
+  image: {fileID: 1197272107}
+  backgroundImages:
+  - {fileID: 21300000, guid: 8f04e296dd7a0481aaca736baf2a52df, type: 3}
+  - {fileID: 21300000, guid: 8d6516ba19e3d4cfab4e8f6313edb757, type: 3}
 --- !u!4 &1005471833
 Transform:
   m_ObjectHideFlags: 0

@@ -1,7 +1,6 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
 namespace Managers
 {
     public enum GameState
@@ -10,7 +9,6 @@ namespace Managers
         busy,
         levelEnd
     }
-
     public class GameManager : MonoBehaviour
     {
         public static GameManager Instance;
@@ -50,7 +48,6 @@ namespace Managers
             levelEnd.SetActive(true);
             currentState = GameState.levelEnd;
         }
-        
         public async void ReplayClicked()
         {
             var level = LevelManager.Instance.GetCurrentLevel();
