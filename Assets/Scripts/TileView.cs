@@ -1,5 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
+using Random = UnityEngine.Random;
+
 public enum TileType
 {
     None = 0,
@@ -19,9 +21,12 @@ public class TileView : MonoBehaviour
     public Tile tile;
     private Vector2 _fromPosition;
     private Vector2 _target;
-
+    private Animator _animator;
+    private static readonly int IsDestroyed = Animator.StringToHash("destroy");
+    [SerializeField] private GameObject tileFace;
     private void Awake()
     {
+        _animator = GetComponent<Animator>();
         DeactivateTile();
     }
     public void SetTile(int x, int y, char tileType, Transform parent)
@@ -30,7 +35,11 @@ public class TileView : MonoBehaviour
         transform.SetParent(parent);
         gameObject.name = GiveName(tile.posX,tile.posY);
         SetSprite();
-        AnimateTile();
+        if (IsBooster())
+        {
+            HideFace();
+        }
+        AnimateTilePosition();
     }
     public void UpdatePosition(int x, int y)
     {
@@ -38,7 +47,6 @@ public class TileView : MonoBehaviour
         tile.posY = y;
         transform.DOMove(new Vector3(tile.posX, tile.posY), 0.2f).SetEase(Ease.InOutBack);
     }
-
     public void UpdateTile(TileView tileView, TileType tileType, Transform parent)
     {
         var position = tileView.transform.position;
@@ -46,9 +54,17 @@ public class TileView : MonoBehaviour
         transform.SetParent(parent);
         gameObject.name = GiveName(tile.posX,tile.posY);
         SetSprite();
-        AnimateTile();
+        if (tileView.IsBooster())
+        {
+            HideFace();
+        }
+        else
+        { 
+            ShowFace();
+        }
+        AnimateTilePosition();
     }
-    private void AnimateTile()
+    private void AnimateTilePosition()
     {
         transform.position = new Vector3(tile.posX, tile.posY + 8);
         ActivateTile();
@@ -77,20 +93,22 @@ public class TileView : MonoBehaviour
     {
         return tile == null;
     }
-
     private TileType GetTileType()
     {
         return tile.tileType;
     }
     public void DeactivateTile()
     {
-        tile = null;
+        tile = null; 
         gameObject.SetActive(false);
     }
-
     private void ActivateTile()
     {
         gameObject.SetActive(true);
+    }
+    public void AnimateTileDestroy()
+    {
+        _animator.SetBool(IsDestroyed, true);
     }
     public string GiveName(int x, int y)
     {
@@ -98,14 +116,12 @@ public class TileView : MonoBehaviour
     }
     public bool IsBooster()
     {
-        return tile.tileType == TileType.RowBooster || tile.tileType == TileType.ColumnBooster;
+        return tile.tileType is TileType.RowBooster or TileType.ColumnBooster;
     }
-    
     public int GiveBoosterTypeIndex()
     {
         return Random.Range(sprites.Length - 2, sprites.Length);
     }
-    
     public int GiveTileTypeIndex(int boardSize)
     {
         return boardSize switch
@@ -115,7 +131,6 @@ public class TileView : MonoBehaviour
             _ => Random.Range(1, sprites.Length - 3)
         };
     }
-    
     public Color GetColor()
     {
         switch (tile.tileType)
@@ -141,5 +156,13 @@ public class TileView : MonoBehaviour
             default:
                 return Color.white;
         }
+    }
+    private void HideFace()
+    { 
+        tileFace.SetActive(false);
+    }
+    private void ShowFace()
+    {
+        tileFace.SetActive(true);
     }
 }

@@ -4,7 +4,6 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 using Random = UnityEngine.Random;
-
 namespace Managers
 {
     public class GridManager : MonoBehaviour
@@ -186,27 +185,36 @@ namespace Managers
         private async void DestroyMatches()
         {
             await UniTask.Delay(200);
-            foreach (var tile in destroyList.Where(tile =>! tile.IsEmpty()))
+            foreach (var tile in destroyList.Where(tile =>!tile.IsEmpty()))
             {
                 ActivateParticle(tile);
-                Tiles[tile.tile.posX, tile.tile.posY].DeactivateTile();
+                tile.AnimateTileDestroy();
             }
-            await UniTask.Delay(100);
+            await UniTask.Delay(400);
+            ClearDestroyList();
             destroyList.Clear();
             DropTile();
+        }
+        
+        private void ClearDestroyList()
+        {
+            foreach (var tile in destroyList.Where(tile =>!tile.IsEmpty()))
+            {
+                Tiles[tile.tile.posX, tile.tile.posY].DeactivateTile();
+            }
         }
         private async void ActivateParticle(TileView tile)
         {
             var particle = particlePool.FirstOrDefault(particleObject => !particleObject.activeInHierarchy);
             if (particle != null)
             {
-                SetParticleColor(tile, particle);
+                SetParticle(tile, particle);
                 particle.SetActive(true);
                 await UniTask.Delay(500);
                 particle.SetActive(false);
             }
         }
-        private void SetParticleColor(TileView tile, GameObject particle)
+        private void SetParticle(TileView tile, GameObject particle)
         {
             var tileParticles = particle.GetComponentsInChildren<ParticleSystem>(); 
             particle.transform.SetParent(transform);
