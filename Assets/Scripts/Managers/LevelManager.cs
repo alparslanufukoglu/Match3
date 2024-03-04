@@ -52,5 +52,13 @@ namespace Managers
         {
             _currentlevel = level;
         }
+        public void UnlockNextLevel()
+        {
+            var nextLevel = _currentlevel.levelNumber + 1;
+            if (GameManager.Instance.score > 0)
+            {
+                PlayerPrefs.SetInt("Level" + nextLevel, 0);
+            }
+        }
     }
 }

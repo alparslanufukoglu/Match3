@@ -40,7 +40,6 @@ public class LevelCellView : UITableViewCell
         await UniTask.Yield(PlayerLoopTiming.LastFixedUpdate);
         LoadSelectedLevel(_level);
     }
-
     private void LoadSelectedLevel(Level level)
     {
         LevelManager.Instance.SetCurrentLevel(level);
@@ -49,7 +48,6 @@ public class LevelCellView : UITableViewCell
         GridView.Instance.SetLevelUI(level);
         GridManager.Instance.SetGrid(level);
     }
-
     private void SetScoreText()
     {
         if (_level.IsLocked())

@@ -19,7 +19,6 @@ public class LevelTableView : MonoBehaviour,IUITableViewDataSource, IUITableView
             PlayerPrefs.SetInt("Level1",0);
         }
     }
-    
     public void LoadLevels()
     {
         table.AppendData();
@@ -30,41 +29,34 @@ public class LevelTableView : MonoBehaviour,IUITableViewDataSource, IUITableView
     {
         return tableView.ReuseOrCreateCell(cellPrefab);
     }
-
     public int NumberOfCellsInTableView(UITableView tableView)
     {
         return LevelManager.Instance.Levels.Count;
     }
-
     public float ScalarForCellInTableView(UITableView tableView, int index)
     {
         return 120;
     }
-
     public float ScalarForUpperMarginInTableView(UITableView tableView, int index)
     {
         return index == 0 ? 100f : 10f;
     }
-
     public float ScalarForLowerMarginInTableView(UITableView tableView, int index)
     {
         return index == LevelManager.Instance.Levels.Count - 1 ? 100f : 10f;
     }
-
     public void CellAtIndexInTableViewWillAppear(UITableView tableView, int index)
     {
         var levelCell = tableView.GetLoadedCell<LevelCellView>(index);
         levelCell.OnClick += CellClicked;
         levelCell.FillCell(LevelManager.Instance.Levels[index]);
     }
-
     public void CellAtIndexInTableViewDidDisappear(UITableView tableView, int index)
     {
         var levelCell = tableView.GetLoadedCell<LevelCellView>(index);
         levelCell.OnClick -= CellClicked;
         levelCell.Clear();
     }
-    
     private void CellClicked()
     {
         levelsMenu.SetActive(false);

@@ -47,6 +47,7 @@ namespace Managers
             GridView.Instance.SetNewHighScoreText(score);
             levelEnd.SetActive(true);
             currentState = GameState.levelEnd;
+            LevelManager.Instance.UnlockNextLevel();
         }
         public async void ReplayClicked()
         {
