@@ -18,6 +18,7 @@ public class InputHandler : MonoBehaviour
     private readonly float _offSet = 10f;
     private Vector2 _endTouchPoint;
     private Direction _swipeDirection;
+    private const int Move = 1;
     
     private void OnMouseDown()
     {
@@ -34,6 +35,7 @@ public class InputHandler : MonoBehaviour
                 {
                     GameManager.Instance.currentState = GameState.busy;
                     GridManager.Instance.ActivateBooster(selectedTile);
+                    GameManager.Instance.DecreaseMoveCount(Move);
                 }
             }
         }
@@ -70,7 +72,6 @@ public class InputHandler : MonoBehaviour
     }
     private void SwapTiles(Direction direction)
     {
-        const int move = 1;
         if (direction == Direction.None)
         {
             GameManager.Instance.currentState = GameState.ready;
@@ -81,7 +82,7 @@ public class InputHandler : MonoBehaviour
         if (targetTile != null)
         {
             SwapPositions(targetTile, selectedTile);
-            GameManager.Instance.DecreaseMoveCount(move);
+            GameManager.Instance.DecreaseMoveCount(Move);
             if (targetTile.IsBooster())
             {
                 GridManager.Instance.ActivateBooster(targetTile);

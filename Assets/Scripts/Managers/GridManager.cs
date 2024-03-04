@@ -317,14 +317,30 @@ namespace Managers
         {
             for (int i = 0; i < gridWidth; i++)
             {
-                destroyList.Add(Tiles[i, booster.tile.posY]);
+                if (Tiles[i,booster.tile.posY].IsEmpty()) continue;
+                if (Tiles[i,booster.tile.posY].tile.tileType == TileType.ColumnBooster)
+                {
+                    ActivateColumnBooster(Tiles[i, booster.tile.posY]);
+                }
+                else
+                {
+                    destroyList.Add(Tiles[i, booster.tile.posY]);
+                }
             }
         }
         private void ActivateColumnBooster(TileView booster)
         {
             for (int i = 0; i < gridHeight; i++)
             {
-                destroyList.Add(Tiles[booster.tile.posX, i]);
+                if (Tiles[booster.tile.posX, i].IsEmpty()) continue;
+                if (Tiles[booster.tile.posX, i].tile.tileType == TileType.RowBooster)
+                {
+                    ActivateRowBooster(Tiles[booster.tile.posX, i]);
+                }
+                else
+                {
+                    destroyList.Add(Tiles[booster.tile.posX, i]);
+                }
             }
         }
         private bool IsBoosterRound(Level level)
