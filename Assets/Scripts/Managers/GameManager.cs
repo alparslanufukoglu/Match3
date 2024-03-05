@@ -44,6 +44,7 @@ namespace Managers
         }
         public void HandleLevelEnd()
         {
+            AudioManager.Instance.gameOverMusic.Play();
             GridView.Instance.SetNewHighScoreText(score);
             levelEnd.SetActive(true);
             currentState = GameState.levelEnd;
@@ -54,6 +55,7 @@ namespace Managers
             var level = LevelManager.Instance.GetCurrentLevel();
             score = 0;
             levelEnd.SetActive(false);
+            AudioManager.Instance.gameOverMusic.Stop();
             GridManager.Instance.SetGrid(level);
             GridView.Instance.SetLevelUI(level);
             await UniTask.Delay(750);
@@ -63,6 +65,7 @@ namespace Managers
         public void BackToMenuClicked()
         {
             levelEnd.SetActive(false);
+            AudioManager.Instance.gameOverMusic.Stop();
             SceneManager.UnloadSceneAsync(1);
             EventManager.Instance.MainMenuActivated();
             EventManager.Instance.PlayButtonClicked(0);

@@ -37,6 +37,7 @@ public class LevelCellView : UITableViewCell
     {
         SceneManager.LoadScene(1, LoadSceneMode.Additive);
         EventManager.Instance.PlayButtonClicked(1);
+        AudioManager.Instance.backgroundMusic.Stop();
         await UniTask.Yield(PlayerLoopTiming.LastFixedUpdate);
         LoadSelectedLevel(_level);
     }

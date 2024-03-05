@@ -1,4 +1,3 @@
-using System.Net.Mime;
 using Managers;
 using UnityEngine;
 using UnityEngine.UI;
@@ -26,6 +25,7 @@ public class MainView : MonoBehaviour
     public void ActivateMainMenu()
     {
         mainMenu.SetActive(true);
+        AudioManager.Instance.backgroundMusic.Play();
     }
     private void ChangeBackgroundImage(int index)
     {
